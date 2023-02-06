@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cryptocurrency_app/src/controllers/coin_controller.dart';
+import 'package:flutter_cryptocurrency_app/src/di.dart';
 import 'package:provider/provider.dart';
 import 'src/views/home_page/home_page.dart';
 
@@ -12,17 +12,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => CoinController()),
-      ],
+      providers: DI.instance.getProviders(),
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Flutter Cryptocurrency App',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           useMaterial3: true,
           primarySwatch: Colors.blue,
         ),
-        home: HomePage(),
+        home: const HomePage(),
       ),
     );
   }

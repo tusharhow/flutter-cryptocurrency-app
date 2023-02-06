@@ -5,8 +5,6 @@ import '../domain/models/coin_detail.dart';
 import '../domain/services/network_service.dart';
 
 class CoinController extends ChangeNotifier {
-  List<Coin> coins = [];
-
   final NetworkService _networkService = NetworkService();
 
   CoinController() {
@@ -17,7 +15,7 @@ class CoinController extends ChangeNotifier {
     try {
       final response = await _networkService.get(COINS);
       final List<dynamic> data = response.data;
-      coins = data.map((e) => Coin.fromJson(e)).toList();
+      final coins = data.map((e) => Coin.fromJson(e)).toList();
       notifyListeners();
       return coins;
     } on Exception catch (e) {
@@ -27,7 +25,7 @@ class CoinController extends ChangeNotifier {
 
   Future<CoinDetail> getCoinById(String id) async {
     try {
-      final response = await _networkService.getCoinById('$COINS/$id');
+      final response = await _networkService.getCoinById('$COIN/$id');
       final Map<String, dynamic> data = response.data;
       final CoinDetail coin = CoinDetail.fromJson(data);
       notifyListeners();

@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cryptocurrency_app/src/controllers/coin_controller.dart';
+import 'package:flutter_cryptocurrency_app/src/views/home_page/components/coin_list.dart';
 import '../detail_page/detail_page.dart';
 
 class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
-  final CoinController _coinController = CoinController();
+  const HomePage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    final CoinController _coinController = CoinController();
     return Scaffold(
-      backgroundColor:  Colors.black,
+      backgroundColor: Colors.black,
       body: Column(
         children: [
           const SizedBox(height: 20),
@@ -18,34 +20,17 @@ class HomePage extends StatelessWidget {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
-                    itemCount: _coinController.coins.length,
+                    itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
-                      final coin = _coinController.coins[index];
-                      return ListTile(
+                      final coin = snapshot.data![index];
+                      return CoinList(
+                        coin: coin,
                         onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => DetailPage(
                               id: coin.id!,
                             ),
-                          ),
-                        ),
-                        title: Text(coin.name!,
-                            style: const TextStyle(color: Colors.white)),
-                        subtitle: Text(
-                          coin.symbol!,
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                        leading: CircleAvatar(
-                          backgroundColor: Colors.white,
-                          child: Text(coin.rank.toString()),
-                        ),
-                        trailing: Text(
-                          coin.isActive == true ? 'Active' : 'Inactive',
-                          style: TextStyle(
-                            color: coin.isActive == true
-                                ? Colors.green
-                                : Colors.red,
                           ),
                         ),
                       );
