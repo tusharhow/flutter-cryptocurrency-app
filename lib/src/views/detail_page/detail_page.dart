@@ -9,141 +9,142 @@ class DetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Column(
-        children: [
-          const SizedBox(height: 20),
-          Expanded(
-              child: FutureBuilder(
-            future: _coinController.getCoinById(id),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                final coin = snapshot.data;
-                return Column(
-                  children: [
-                    const SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        children: [
-                          Text(
-                            '${coin!.rank}. ',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 25,
-                            ),
-                          ),
-                          Text(
-                            coin.name!,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 25,
-                            ),
-                          ),
-                          const Spacer(),
-                          Text(
-                            coin.isActive == true ? 'Active' : 'Inactive',
-                            style: const TextStyle(
-                              color: Colors.green,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        coin.description!,
-                        style: const TextStyle(
-                          color: Colors.white54,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Text(
-                          'Tags:',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Wrap(
-                      runSpacing: 8,
-                      spacing: 8,
-                      children: coin.tags!.map((tag) {
-                        return Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            border: Border.all(color: Colors.blue),
-                          ),
-                          child: Center(
-                            child: Text(
-                              tag.name!,
-                              style: const TextStyle(color: Colors.blue),
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                    const SizedBox(height: 20),
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                         padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Text(
-                          'Team Members',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Wrap(
-                      runSpacing: 8,
-                      spacing: 8,
-                      children: coin.team!.map((member) {
-                        return Column(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            FutureBuilder(
+              future: _coinController.getCoinById(id),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final coin = snapshot.data;
+                  return Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              member.name!,
-                              style: const TextStyle(color: Colors.white),
+                              '${coin!.rank}. ${coin.name!}',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 25,
+                              ),
                             ),
                             Text(
-                              member.position!,
-                              style: const TextStyle(color: Colors.white),
+                              coin.isActive == true ? 'Active' : 'Inactive',
+                              style: const TextStyle(
+                                color: Colors.green,
+                              ),
                             ),
                           ],
-                        );
-                      }).toList(),
-                    ),
-                    const SizedBox(height: 20),
-                  ],
-                );
-              } else if (snapshot.hasError) {
-                return Center(
-                  child: Text(snapshot.error.toString()),
-                );
-              } else {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            },
-          ))
-        ],
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Text(
+                          coin.description!,
+                          style: const TextStyle(
+                            color: Colors.white54,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Text(
+                            'Tags:',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Wrap(
+                        runSpacing: 8,
+                        spacing: 8,
+                        direction: Axis.horizontal,
+                        children: coin.tags!.map((tag) {
+                          return Chip(
+                            label: Text(tag.name!,
+                                style: const TextStyle(color: Colors.green)),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100),
+                              side: const BorderSide(
+                                  color: Colors.green, width: 10.0),
+                            ),
+                            backgroundColor: Colors.black,
+                          );
+                        }).toList(),
+                      ),
+                      const SizedBox(height: 20),
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Text(
+                            'Team Members',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                      ListView.separated(
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              leading: CircleAvatar(
+                                backgroundColor: Colors.white,
+                                child: Text(index < 9
+                                    ? '0${index + 1}'
+                                    : '${index + 1}'),
+                              ),
+                              title: Text(
+                                coin.team![index].name!,
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              subtitle: Text(
+                                coin.team![index].position!,
+                                style: const TextStyle(color: Colors.white54),
+                              ),
+                            );
+                          },
+                          separatorBuilder: (context, index) => const Divider(
+                                color: Colors.white30,
+                              ),
+                          itemCount: coin.team!.length),
+                      const SizedBox(height: 20),
+                    ],
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text(snapshot.error.toString()),
+                  );
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
+            )
+          ],
+        ),
       ),
     );
   }
